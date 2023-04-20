@@ -1,9 +1,6 @@
 name: OpenTelemetry
 
 on:
-  pull_request:
-    types: [opened]
-    
   push:
     branches:
       - main
@@ -21,7 +18,7 @@ env:
 
 jobs:
   push:
-    name: push
+    name: publish image
     runs-on: ubuntu-latest
 
     permissions:
@@ -29,17 +26,6 @@ jobs:
       id-token: write
 
     steps:
-      - name: confirmation to run worklflow
-        id: confirm 
-        if: ${{ github.event_name == 'pull_request' }}
-        run: |
-            echo "Do you want to proceed (yes/no)"
-            read confirmation
-            echo "::set-output name=confirmed::$confirmation"
-      - name: Proceed if confirm Yes
-        if: ${{ steps.confirm.outputs.confirmed == 'yes' }}
-        run: |
-          echo "Okay Buddy, got your confirmation, workflow pending"
       - name: checkout the source code
         uses: actions/checkout@v3
 
