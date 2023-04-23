@@ -25,13 +25,13 @@ receivers:
       network:
       processes:
   # The prometheus receiver scrapes metrics needed for the OpenTelemetry Collector Dashboard.
-  prometheus:
-    config:
-      scrape_configs:
-      - job_name: 'otelcol'
-        scrape_interval: 10s
-        static_configs:
-        - targets: ['0.0.0.0:8888']
+  # prometheus:
+  #   config:
+  #     scrape_configs:
+  #     - job_name: 'otelcol'
+  #       scrape_interval: 10s
+  #       static_configs:
+  #       - targets: ['0.0.0.0:8888']
 
   # filelog:
   #   include_file_path: true
