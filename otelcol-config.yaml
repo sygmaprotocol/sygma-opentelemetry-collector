@@ -4,13 +4,13 @@ receivers:
       http:
         endpoint: localhost:4318
   # The hostmetrics receiver is required to get correct infrastructure metrics in Datadog.
-  hostmetrics:
-    collection_interval: 10s
-    scrapers:
-      paging:
-        metrics:
-          system.paging.utilization:
-            enabled: true
+  # hostmetrics:
+  #   collection_interval: 10s
+  #   scrapers:
+  #     paging:
+  #       metrics:
+  #         system.paging.utilization:
+  #           enabled: true
       cpu:
         metrics:
           system.cpu.utilization:
