@@ -33,11 +33,11 @@ receivers:
         static_configs:
         - targets: ['0.0.0.0:8888']
 
-  filelog:
-    include_file_path: true
-    poll_interval: 500ms
-    include:
-      - /var/log/**/*relayer*/*.log
+  # filelog:
+  #   include_file_path: true
+  #   poll_interval: 500ms
+  #   include:
+  #     - /var/log/**/*relayer*/*.log
 
 processors:
   batch:
