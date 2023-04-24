@@ -16,6 +16,8 @@ dist:
     gomod: go.opentelemetry.io/collector/exporter/loggingexporter v0.75.0
   - import: go.opentelemetry.io/collector/exporter/otlphttpexporter 
     gomod: go.opentelemetry.io/collector/exporter/otlphttpexporter v0.75.0
+  - import: go.opentelemetry.io/collector/exporter/otlpexporter
+    gomod: go.opentelemetry.io/collector/exporter/otlphttpexporter v0.75.0
 
 receivers:
   - import: go.opentelemetry.io/collector/receiver/otlpreceiver
@@ -30,6 +32,8 @@ extensions:
     gomod: go.opentelemetry.io/collector/extension/ballastextension v0.75.0
   - import: go.opentelemetry.io/collector/extension/zpagesextension
     gomod: go.opentelemetry.io/collector/extension/zpagesextension v0.75.0
+  - import: github.com/open-telemetry/opentelemetry-collector-contrib/extension/pprofextension
+    gomod:  github.com/open-telemetry/opentelemetry-collector-contrib/extension/pprofextension v0.75.0
 
 processors:
   - import: github.com/open-telemetry/opentelemetry-collector-contrib/processor/resourcedetectionprocessor
