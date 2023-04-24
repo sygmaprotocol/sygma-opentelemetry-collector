@@ -11,7 +11,7 @@ processors:
 exporters:
   datadog:
     api:
-      site: 'https://datadghq.com'
+      site: 'datadghq.com'
       key: 'eb7c2acc9758f779ac7a65eaecb9b8b5'
   logging:
 
