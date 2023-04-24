@@ -46,10 +46,10 @@ service:
     traces:
       receivers: [oltp, prometheus]
       processors: [batch]
-      ***REMOVED*** [logging, datadog, prometheus, otlphttp, prometheusremotewrite]
+      ***REMOVED*** [logging, datadog, prometheus, otlp, otlphttp, prometheusremotewrite]
     metrics:
       receivers: [otlp, prometheus]
       processors:  [batch]
-      ***REMOVED*** [datadog, logging, prometheus, otlphttp, prometheusremotewrite]
+      ***REMOVED*** [datadog, logging, prometheus, otlp, otlphttp, prometheusremotewrite]
     logging:
       receivers: [otlp, datadog, prometheus, prometheusremotewrite]
