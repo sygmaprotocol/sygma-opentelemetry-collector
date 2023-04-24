@@ -46,10 +46,10 @@ service:
     traces:
       receivers: [oltp, prometheus]
       processors: [batch]
-      exporters: [logging, datadog, prometheus, otlphttp, prometheusremotewrite]
+      exporters: [logging, datadog, prometheus, otlp, otlphttp, prometheusremotewrite]
     metrics:
       receivers: [otlp, prometheus]
       processors:  [batch]
-      exporters: [datadog, logging, prometheus, otlphttp, prometheusremotewrite]
+      exporters: [datadog, logging, prometheus, otlp, otlphttp, prometheusremotewrite]
     logging:
       receivers: [otlp, datadog, prometheus, prometheusremotewrite]
