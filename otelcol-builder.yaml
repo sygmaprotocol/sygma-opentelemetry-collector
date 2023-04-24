@@ -6,6 +6,10 @@ dist:
   version: 0.75.0
   otelcol_version: 0.75.0
 exporters:
+  - import: github.com/open-telemetry/opentelemetry-collector-contrib/exporter/prometheusremotewriteexporter
+    goomod: github.com/open-telemetry/opentelemetry-collector-contrib/exporter/prometheusremotewriteexporter v0.75.0
+  - import: github.com/open-telemetry/opentelemetry-collector-contrib/exporter/prometheusexporter
+    goomod: github.com/open-telemetry/opentelemetry-collector-contrib/exporter/prometheusexporter v0.75.0
   - import: github.com/open-telemetry/opentelemetry-collector-contrib/exporter/datadogexporter
     gomod: github.com/open-telemetry/opentelemetry-collector-contrib/exporter/datadogexporter v0.75.0
   - import: go.opentelemetry.io/collector/exporter/loggingexporter
