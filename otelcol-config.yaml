@@ -28,6 +28,7 @@ processors:
       site: 'datadog-agent'
 
   logging:
+    loglevel: debug
   otlp:
     endpoint: 'https://relayers.com:4318'
   otlphttp:
@@ -51,5 +52,7 @@ service:
       receivers: [otlp, prometheus]
       processors:  [batch]
       ***REMOVED*** [datadog, logging, prometheus, otlp, otlphttp, prometheusremotewrite]
-    logging:
-      receivers: [otlp, datadog, prometheus, prometheusremotewrite]
+    logs:
+      receivers: [otlp, prometheus]
+      processors: [batch]
+      ***REMOVED*** [logging, datadog, prometheusremotewrite ]
