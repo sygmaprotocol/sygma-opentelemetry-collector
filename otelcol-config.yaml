@@ -25,7 +25,7 @@ processors:
 exporters:
   datadog:
     api:
-      service: 'datadog-agent'
+      site: 'datadog-agent'
       key: 'eb7c2acc9758f779ac7a65eaecb9b8b5'
   logging:
   otlp:
