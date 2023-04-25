@@ -45,7 +45,7 @@ service:
   extensions: [health_check, pprof, zpages]
   pipelines:
     traces:
-      receivers: [oltp, prometheus]
+      receivers: [otlp, prometheus]
       processors: [batch]
       ***REMOVED*** [logging, datadog, prometheus, otlp, otlphttp, prometheusremotewrite]
     metrics:
