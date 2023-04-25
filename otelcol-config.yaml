@@ -25,7 +25,7 @@ processors:
 ***REMOVED***
 ***REMOVED***
 ***REMOVED***
-      service: 'datadog-agent'
+      site: 'datadog-agent'
 
   logging:
   otlp:

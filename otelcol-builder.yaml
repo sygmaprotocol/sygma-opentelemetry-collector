@@ -34,6 +34,8 @@ extensions:
     gomod: go.opentelemetry.io/collector/extension/zpagesextension v0.75.0
   - import: github.com/open-telemetry/opentelemetry-collector-contrib/extension/pprofextension
     gomod:  github.com/open-telemetry/opentelemetry-collector-contrib/extension/pprofextension v0.75.0
+  - import: github.com/open-telemetry/opentelemetry-collector-contrib/extension/healthcheckextension
+    gomod: github.com/open-telemetry/opentelemetry-collector-contrib/extension/healthcheckextension v0.75.0
 
 processors:
   - import: github.com/open-telemetry/opentelemetry-collector-contrib/processor/resourcedetectionprocessor
