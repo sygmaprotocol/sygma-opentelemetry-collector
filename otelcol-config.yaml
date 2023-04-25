@@ -25,10 +25,11 @@ processors:
 ***REMOVED***
 ***REMOVED***
 ***REMOVED***
-      site: 'datadog-agent'
 
   logging:
-    loglevel: debug
+    verbosity: detailed
+    sampling_initial: 5
+    sampling_thereafter: 200
   otlp:
     endpoint: 'https://relayers.com:4318'
   otlphttp:
@@ -36,6 +37,11 @@ processors:
   prometheus:
     endpoint: http://localhost:8888/metrics
     namespace: default
+    send_timestamps: true
+    metric_expiration: 180m
+    enable_open_metrics: true
+    resource_to_telemetry_conversion:
+      enabled: true
   prometheusremotewrite:
     endpoint: https://aps-workspaces.us-east-2.amazonaws.com/workspaces/ws-32bde15a-a908-4003-a30e-666f482168c7/api/v1/remote_write
     tls:
@@ -45,14 +51,14 @@ service:
   extensions: [health_check, pprof, zpages]
   pipelines:
     traces:
-      receivers: [otlp, prometheus]
+      receivers: [otlp]
       processors: [batch]
-      ***REMOVED*** [logging, datadog, prometheus, otlp, otlphttp, prometheusremotewrite]
+      ***REMOVED*** [datadog, otlp, otlphttp, prometheusremotewrite]
     metrics:
       receivers: [otlp, prometheus]
       processors:  [batch]
       ***REMOVED*** [datadog, logging, prometheus, otlp, otlphttp, prometheusremotewrite]
     logs:
-      receivers: [otlp, prometheus]
+      receivers: [otlp]
       processors: [batch]
       ***REMOVED*** [logging, datadog, prometheusremotewrite ]
