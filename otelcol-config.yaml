@@ -17,7 +17,8 @@ receivers:
       scrape_configs:
         - job_name: 'sygma_relayers'
           static_configs:
-            - targets: ['localhost:8888']
+            - targets: ['0.0.0.0:9001', '0.0.0.0:9000']
+          scheme: tcp     
 
 processors:
   batch:
@@ -25,27 +26,26 @@ processors:
 ***REMOVED***
 ***REMOVED***
 ***REMOVED***
-
+      site: 'datadoghq.com'
+      key: '${{ secrets.DD_SITE }}'
   logging:
     verbosity: detailed
     sampling_initial: 5
     sampling_thereafter: 200
   otlp:
-    endpoint: 'https://relayers.com:4318'
+    endpoint: '0.0.0.0:4317'
+    tls:
+      insecure: true
   otlphttp:
-    endpoint: 'https://sygma-relayers.com:4318'
+    endpoint: 'http://0.0.0.0:4318'
   prometheus:
-    endpoint: http://localhost:8888/metrics
+    endpoint: 'localhost:8889'
     namespace: default
     send_timestamps: true
     metric_expiration: 180m
     enable_open_metrics: true
     resource_to_telemetry_conversion:
       enabled: true
-  prometheusremotewrite:
-    endpoint: https://aps-workspaces.us-east-2.amazonaws.com/workspaces/ws-32bde15a-a908-4003-a30e-666f482168c7/api/v1/remote_write
-    tls:
-      insecure: true
 
 service:
   extensions: [health_check, pprof, zpages]
@@ -53,11 +53,11 @@ service:
     traces:
       receivers: [otlp]
       processors: [batch]
-      ***REMOVED*** [datadog, otlp, otlphttp]
+      ***REMOVED*** [datadog, otlp, otlphttp, logging]
     metrics:
       receivers: [otlp, prometheus]
       processors:  [batch]
-      ***REMOVED*** [datadog, logging, prometheus, otlp, otlphttp, prometheusremotewrite]
+      ***REMOVED*** [datadog, logging, prometheus, otlp, otlphttp]
     logs:
       receivers: [otlp]
       processors: [batch]
