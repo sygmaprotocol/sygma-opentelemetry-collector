@@ -9,18 +9,46 @@ receivers:
   otlp:
     protocols:
       grpc:
-        endpoint: localhost:4317
       http:
-        endpoint: localhost:4318
   prometheus:
     config:
       scrape_configs:
         - job_name: 'sygma_relayers'
           static_configs:
-            - targets: ['localhost:8888']
+            - targets: ['0.0.0.0:9001', '0.0.0.0:9000']
+          scheme: tcp     
+  hostmetrics:
+    collection_interval: 10s
+    scrapers:
+      paging:
+        metrics:
+          system.paging.utilization:
+            enabled: true
+      load:
+        cpu_average: true
+      cpu:
+        metrics:
+          system.cpu.utilization:
+            enabled: true
+      disk:
+      filesystem:
+        metrics:
+          system.filesystem.utilization:
+            enabled: true
+      memory:
+      network:
+        metrics:
+          system.network.connections:
+            enabled: true
+      process:
 
 processors:
   batch:
+    timeout: 10s
+    send_batch_max_size: 1000
+    send_batch_size: 100
+  resourcedetection:
+    detectors: [ecs, ec2, system]
 
 exporters:
   datadog:
@@ -30,22 +58,15 @@ exporters:
     verbosity: detailed
     sampling_initial: 5
     sampling_thereafter: 200
-  otlp:
-    endpoint: 'https://relayers.com:4318'
-  otlphttp:
-    endpoint: 'https://sygma-relayers.com:4318'
+
   prometheus:
-    endpoint: http://localhost:8888/metrics
+    endpoint: 'localhost:8889'
     namespace: default
     send_timestamps: true
     metric_expiration: 180m
     enable_open_metrics: true
     resource_to_telemetry_conversion:
       enabled: true
-  prometheusremotewrite:
-    endpoint: https://aps-workspaces.us-east-2.amazonaws.com/workspaces/ws-32bde15a-a908-4003-a30e-666f482168c7/api/v1/remote_write
-    tls:
-      insecure: true
 
 service:
   extensions: [health_check, pprof, zpages]
@@ -53,12 +74,12 @@ service:
     traces:
       receivers: [otlp]
       processors: [batch]
-      exporters: [datadog, otlp, otlphttp, prometheusremotewrite]
+      exporters: [datadog, logging]
     metrics:
-      receivers: [otlp, prometheus]
+      receivers: [otlp, prometheus, hostmetrics]
       processors:  [batch]
-      exporters: [datadog, logging, prometheus, otlp, otlphttp, prometheusremotewrite]
+      exporters: [datadog, logging, prometheus]
     logs:
       receivers: [otlp]
       processors: [batch]
-      exporters: [logging, datadog, prometheusremotewrite ]
+      exporters: [logging, datadog]
