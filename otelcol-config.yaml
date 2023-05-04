@@ -53,12 +53,12 @@ processors:
 exporters:
   datadog:
     api:
-      key: 'eb7c2acc9758f779ac7a65eaecb9b8b5'
+      site: 'datadoghq.com'
+      key: '${{ secrets.DD_SITE }}'
   logging:
     verbosity: detailed
     sampling_initial: 5
     sampling_thereafter: 200
-
   prometheus:
     endpoint: 'localhost:8889'
     namespace: default
