@@ -52,6 +52,8 @@ processors:
 
 exporters:
   datadog:
+    retry_on_failure:
+      enabled: true
     api:
       site: 'datadoghq.com'
       key: '${{ secrets.DD_SITE }}'
