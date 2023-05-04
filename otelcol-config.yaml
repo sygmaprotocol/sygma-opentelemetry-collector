@@ -15,7 +15,7 @@ receivers:
       scrape_configs:
         - job_name: 'sygma_relayers'
           static_configs:
-            - targets: ['0.0.0.0:8888', 'localhost:9001', 'localhost:9000']
+            - targets: ['localhost:8888', 'localhost:9000', 'localhost:9001']
           scheme: tcp     
   hostmetrics:
     collection_interval: 10s
@@ -56,11 +56,15 @@ exporters:
       enabled: true
     api:
       site: 'datadoghq.com'
-      key: '${{ secrets.DD_SITE }}'
+      key: 'eb7c2acc9758f779ac7a65eaecb9b8b5'
   logging:
     verbosity: detailed
     sampling_initial: 5
     sampling_thereafter: 200
+  otlphttp:
+    auth:
+      authenticator: basicauth/otlp
+    endpoint: https://otlp-gateway-prod-us-central-0.grafana.net/otlp
   prometheus:
     endpoint: 'localhost:8889'
     namespace: default
