@@ -9,9 +9,7 @@ receivers:
   otlp:
     protocols:
       grpc:
-        endpoint: localhost:4317
       http:
-        endpoint: localhost:4318
   prometheus:
     config:
       scrape_configs:
@@ -19,9 +17,38 @@ receivers:
           static_configs:
             - targets: ['0.0.0.0:9001', '0.0.0.0:9000']
           scheme: tcp     
+  hostmetrics:
+    collection_interval: 10s
+    scrapers:
+      paging:
+        metrics:
+          system.paging.utilization:
+            enabled: true
+      load:
+        cpu_average: true
+      cpu:
+        metrics:
+          system.cpu.utilization:
+            enabled: true
+      disk:
+      filesystem:
+        metrics:
+          system.filesystem.utilization:
+            enabled: true
+      memory:
+      network:
+        metrics:
+          system.network.connections:
+            enabled: true
+      process:
 
 processors:
   batch:
+    timeout: 10s
+    send_batch_max_size: 1000
+    send_batch_size: 100
+  resourcedetection:
+    detectors: [ecs, ec2, system]
 
 ***REMOVED***
 ***REMOVED***
@@ -32,12 +59,6 @@ processors:
     verbosity: detailed
     sampling_initial: 5
     sampling_thereafter: 200
-  otlp:
-    endpoint: '0.0.0.0:4317'
-    tls:
-      insecure: true
-  otlphttp:
-    endpoint: 'http://0.0.0.0:4318'
   prometheus:
     endpoint: 'localhost:8889'
     namespace: default
@@ -53,12 +74,12 @@ service:
     traces:
       receivers: [otlp]
       processors: [batch]
-      ***REMOVED*** [datadog, otlp, otlphttp, logging]
+      ***REMOVED*** [datadog, logging]
     metrics:
-      receivers: [otlp, prometheus]
+      receivers: [otlp, prometheus, hostmetrics]
       processors:  [batch]
-      ***REMOVED*** [datadog, logging, prometheus, otlp, otlphttp]
+      ***REMOVED*** [datadog, logging, prometheus]
     logs:
       receivers: [otlp]
       processors: [batch]
-      ***REMOVED*** [logging, datadog, otlp, otlphttp]
+      ***REMOVED*** [logging, datadog]
