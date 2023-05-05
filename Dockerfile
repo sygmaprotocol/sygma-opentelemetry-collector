@@ -12,6 +12,7 @@ COPY otelcol-config.yaml /etc/otelcol-contrib/config.yaml
 COPY --from=busybox:latest /bin/sh /bin/sh 
 COPY --from=busybox:latest /bin/hostname /bin/hostname 
 COPY --from=busybox:latest /bin/cat /bin/cat
+COPY --from=busybox:latest /bin/ping /bin/ping
 COPY --from=ghcr.io/tarampampam/curl:8.0.1 /bin/curl /bin/curl
 LABEL org.opencontainers.image.source https://github.com/sygmaprotocol/sygma-opentelemetry-collector
 EXPOSE 4317/tcp 4318/tcp 55678/tcp 55679/tcp 8888/tcp 443 4448 4319 9000 9001
