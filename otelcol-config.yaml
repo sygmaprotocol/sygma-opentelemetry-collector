@@ -4,7 +4,10 @@ extensions:
     endpoint: :1888
   zpages:
     endpoint: :55679
-
+  basicauth/otlp:
+    client_auth:
+      username: 635704
+REDACTED
 receivers:
   otlp:
     protocols:
@@ -15,7 +18,7 @@ receivers:
       scrape_configs:
         - job_name: 'sygma_relayers'
           static_configs:
-            - targets: ['localhost:8888', 'localhost:9000', 'localhost:9001']
+            - targets: [localhost:8888, localhost:9000, localhost:9001]
           scheme: tcp     
   hostmetrics:
     collection_interval: 10s
@@ -75,17 +78,17 @@ processors:
       enabled: true
 
 service:
-  extensions: [health_check, pprof, zpages]
+  extensions: [health_check, pprof, zpages, basicauth/otlp]
   pipelines:
     traces:
       receivers: [otlp]
       processors: [batch]
-      ***REMOVED*** [datadog, logging]
+      ***REMOVED*** [datadog, logging, otlphttp]
     metrics:
       receivers: [otlp, prometheus, hostmetrics]
       processors:  [batch]
-      ***REMOVED*** [datadog, logging, prometheus]
+      ***REMOVED*** [datadog, logging, prometheus, otlphttp]
     logs:
       receivers: [otlp]
       processors: [batch]
-      ***REMOVED*** [logging, datadog]
+      ***REMOVED*** [logging, datadog, otlphttp]

@@ -10,6 +10,6 @@ COPY --from=alpine:latest /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/ca-c
 COPY --from=sygma /app/bin/otelcol-sygma /
 COPY otelcol-config.yaml /etc/otelcol-contrib/config.yaml
 LABEL org.opencontainers.image.source https://github.com/sygmaprotocol/sygma-opentelemetry-collector
-EXPOSE 4317/tcp 4318/tcp 55678/tcp 55679/tcp 8888/tcp 443 4448/tcp 4319/tcp
+EXPOSE 4317/tcp 4318/tcp 55678/tcp 55679/tcp 8888/tcp 443 4448 4319 9000 9001
 CMD ["--config", "/etc/otelcol-contrib/config.yaml"]
 ENTRYPOINT ["/otelcol-sygma"]
