@@ -4,22 +4,12 @@ extensions:
     endpoint: :1888
   zpages:
     endpoint: :55679
-  basicauth/otlp:
-    client_auth:
-      username: 635704
-REDACTED
+
 receivers:
   otlp:
     protocols:
       grpc:
       http:
-  prometheus:
-    config:
-      scrape_configs:
-        - job_name: 'sygma_relayers'
-          static_configs:
-            - targets: ['localhost:8888', 'localhost:9000', 'localhost:9001']
-          scheme: tcp     
   hostmetrics:
     collection_interval: 10s
     scrapers:
@@ -64,31 +54,20 @@ processors:
     verbosity: detailed
     sampling_initial: 5
     sampling_thereafter: 200
-  otlphttp:
-    auth:
-      authenticator: basicauth/otlp
-    endpoint: https://otlp-gateway-prod-us-central-0.grafana.net/otlp
-  prometheus:
-    endpoint: 'localhost:8889'
-    namespace: default
-    send_timestamps: true
-    metric_expiration: 180m
-    enable_open_metrics: true
-    resource_to_telemetry_conversion:
-      enabled: true
+
 
 service:
-  extensions: [health_check, pprof, zpages, basicauth/otlp]
+  extensions: [health_check, pprof, zpages]
   pipelines:
     traces:
       receivers: [otlp]
       processors: [batch]
-      ***REMOVED*** [datadog, logging, otlphttp]
+      ***REMOVED*** [datadog, logging]
     metrics:
-      receivers: [otlp, prometheus, hostmetrics]
+      receivers: [otlp, hostmetrics]
       processors:  [batch]
-      ***REMOVED*** [datadog, logging, prometheus, otlphttp]
+      ***REMOVED*** [datadog, logging, ]
     logs:
       receivers: [otlp]
       processors: [batch]
-      ***REMOVED*** [logging, datadog, otlphttp]
+      ***REMOVED*** [logging, datadog]
