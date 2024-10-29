@@ -3,7 +3,7 @@ name: OpenTelemetry
 on:
   push:
     branches:
-      - main
+      - grafana
     paths-ignore:
       - '!Dockerfile'
       - '!.github/workflows'
@@ -14,7 +14,7 @@ env:
   ENVIRONMENT: STAGE
   AWS_STAGE: '${{ secrets.AWS_ARN }}'
   REGISTRY: 'ghcr.io'
-  TAG: 'latest'
+  TAG: 'v2'
 
 jobs:
   push:
