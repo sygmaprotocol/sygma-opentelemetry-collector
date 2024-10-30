@@ -13,6 +13,7 @@ COPY --from=alpine:latest /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/ca-c
 COPY --from=sygma /app/bin/otelcol-sygma /
 COPY otelcol-config.yaml /etc/otelcol-contrib/config.yaml
 LABEL org.opencontainers.image.source=https://github.com/sygmaprotocol/sygma-opentelemetry-collector
+LABEL org.opencontainers.image.description="Sygma Opentelemetry Collector Agent"
 
 CMD ["--config", "/etc/otelcol-contrib/config.yaml", "--feature-gates=-component.UseLocalHostAsDefaultHost"]
 ENTRYPOINT ["/otelcol-sygma"]

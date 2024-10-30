@@ -13,6 +13,10 @@ extensions:
     client_auth:
       username: "868232"
       password: "glc_eyJvIjoiMTAyODc5MiIsIm4iOiJzdGFjay05MTA0NTEtaGwtcmVhZC1sb2tpLW90bHAiLCJrIjoiODgwa29TNHgxSzM0cDU2YXBuU1FpczNtIiwibSI6eyJyIjoicHJvZC11cy13ZXN0LTAifX0="
+  basicauth/prometheus:
+    client_auth:
+      username: "1535416"
+      password: "glc_eyJvIjoiMTAyODc5MiIsIm4iOiJzdGFjay05MTA0NTEtaG0td3JpdGUtcHJvbWV0aGV1cyIsImsiOiJSOHM1YmlySjRDMGFQdjE5NmN6MWo4WTYiLCJtIjp7InIiOiJwcm9kLXVzLXdlc3QtMCJ9fQ=="
 
 connectors:
   grafanacloud:
@@ -65,17 +69,23 @@ exporters:
   #     site: 'datadoghq.com'
   #     key: 'eb7c2acc9758f779ac7a65eaecb9b8b5'
   otlphttp/grafana_cloud:
-    endpoint: https://otlp-gateway-prod-us-west-0.grafana.net/otlp #https://chainsafe.grafana.net/loki/api/v1/push
+    endpoint: https://otlp-gateway-prod-us-west-0.grafana.net/otlp/v1/traces #https://chainsafe.grafana.net/loki/api/v1/push
     auth:
       authenticator: basicauth/grafana_cloud
     encoding: json
-  otlphttp/loki:
+
+  prometheusremotewrite:
+    endpoint: "https://prometheus-prod-36-prod-us-west-0.grafana.net/api/prom/push"
     auth:
-      authenticator: basicauth/grafana_cloud
-    endpoint: https://logs-prod-021.grafana.net:3100/v1/logs
+      authenticator: basicauth/prometheus
+
+  otlphttp/loki:
+    endpoint: "https://logs-prod-021.grafana.net/loki/api/v1/push"
+    auth:
+      authenticator:  basicauth/otlp
 
 service:
-  extensions: [health_check, pprof, zpages, basicauth/grafana_cloud, basicauth/otlp]
+  extensions: [health_check, pprof, zpages, basicauth/grafana_cloud, basicauth/otlp, basicauth/prometheus]
   pipelines:
     traces:
       receivers: [otlp]
@@ -84,11 +94,7 @@ service:
     metrics:
       receivers: [otlp, hostmetrics]
       processors: [resourcedetection, batch]
-      exporters: [otlphttp/grafana_cloud]
-    metrics/grafanacloud:
-      receivers: [otlp]
-      processors: [batch]
-      exporters: [otlphttp/grafana_cloud]
+      exporters: [prometheusremotewrite]
     logs:
       receivers: [otlp]
       processors: [batch]
