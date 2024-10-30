@@ -69,7 +69,7 @@ exporters:
   #     site: 'datadoghq.com'
   #     key: 'eb7c2acc9758f779ac7a65eaecb9b8b5'
   otlphttp/grafana_cloud:
-    endpoint: https://otlp-gateway-prod-us-west-0.grafana.net/otlp/v1/traces #https://chainsafe.grafana.net/loki/api/v1/push
+    endpoint: https://otlp-gateway-prod-us-west-0.grafana.net/otlp #https://chainsafe.grafana.net/loki/api/v1/push
     auth:
       authenticator: basicauth/grafana_cloud
     encoding: json
