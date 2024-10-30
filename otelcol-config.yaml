@@ -62,6 +62,8 @@ processors:
     detectors: [ecs, ec2, system, env]
 
 exporters:
+  debug:
+    verbosity: detailed
   # datadog:
   #   retry_on_failure:
   #     enabled: true
@@ -69,7 +71,9 @@ exporters:
   #     site: 'datadoghq.com'
   #     key: 'eb7c2acc9758f779ac7a65eaecb9b8b5'
   otlphttp/grafana_cloud:
-    endpoint: https://otlp-gateway-prod-us-west-0.grafana.net/otlp #https://chainsafe.grafana.net/loki/api/v1/push
+    traces_endpoint: https://otlp-gateway-prod-us-west-0.grafana.net/otlp/v1/traces #https://chainsafe.grafana.net/loki/api/v1/push
+    metrics_endpoint: https://otlp-gateway-prod-us-west-0.grafana.net/otlp/v1/metrics
+    logs_endpoint: https://otlp-gateway-prod-us-west-0.grafana.net/otlp/v1/logs
     auth:
       authenticator: basicauth/grafana_cloud
     encoding: json
@@ -78,6 +82,8 @@ exporters:
     endpoint: "https://prometheus-prod-36-prod-us-west-0.grafana.net/api/prom/push"
     auth:
       authenticator: basicauth/prometheus
+    remote_write_queue:
+      enabled: false
 
   otlphttp/loki:
     endpoint: "https://logs-prod-021.grafana.net/loki/api/v1/push"
@@ -90,12 +96,12 @@ service:
     traces:
       receivers: [otlp]
       processors: [batch]
-      exporters: [prometheusremotewrite]
+      exporters: [otlphttp/grafana_cloud, debug]
     metrics:
       receivers: [otlp, hostmetrics]
       processors: [resourcedetection, batch]
-      exporters: [otlphttp/grafana_cloud]
+      exporters: [otlphttp/grafana_cloud, prometheusremotewrite, debug]
     logs:
       receivers: [otlp]
       processors: [batch]
-      exporters: [otlphttp/loki]
+      exporters: [otlphttp/loki, otlphttp/grafana_cloud, debug]
