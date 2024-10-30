@@ -90,11 +90,11 @@ service:
     traces:
       receivers: [otlp]
       processors: [batch]
-      exporters: [otlphttp/grafana_cloud]
+      exporters: [prometheusremotewrite]
     metrics:
       receivers: [otlp, hostmetrics]
       processors: [resourcedetection, batch]
-      exporters: [prometheusremotewrite]
+      exporters: [otlphttp/grafana_cloud]
     logs:
       receivers: [otlp]
       processors: [batch]
