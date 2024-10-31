@@ -114,9 +114,9 @@ exporters:
     endpoint: https://logs-prod-021.grafana.net:3100/otlp/vi/logs # https://logs-prod-021.grafana.net:3100/otlp
     auth:
       authenticator:  basicauth/otlp
-    default_labels_enabled:
-      exporter: 
-      job:    
+    # default_labels_enabled:
+    #   exporter: 
+    #   job:    
 
 service:
   extensions: [health_check, pprof, zpages, basicauth/grafana_cloud, basicauth/otlp, basicauth/prometheus]
