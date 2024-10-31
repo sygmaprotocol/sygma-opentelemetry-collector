@@ -132,4 +132,4 @@ service:
     logs:
       receivers: [otlp, filelog, otlpjsonfile]
       processors: [batch]
-      exporters: [loki, otlphttp/grafana_cloud, debug]
+      exporters: [otlphttp/loki, otlphttp/grafana_cloud, debug]
