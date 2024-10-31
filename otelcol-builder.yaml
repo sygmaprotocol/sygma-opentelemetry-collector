@@ -32,7 +32,8 @@ receivers:
     gomod: github.com/open-telemetry/opentelemetry-collector-contrib/receiver/hostmetricsreceiver v0.112.0
   - import: github.com/open-telemetry/opentelemetry-collector-contrib/receiver/lokireceiver
     gomod: github.com/open-telemetry/opentelemetry-collector-contrib/receiver/lokireceiver v0.112.0
-
+  - import: github.com/open-telemetry/opentelemetry-collector-contrib/receiver/filelogreceiver
+    gomod: github.com/open-telemetry/opentelemetry-collector-contrib/receiver/filelogreceiver v0.112.0 
 
 extensions:
   - import: go.opentelemetry.io/collector/extension/zpagesextension
