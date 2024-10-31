@@ -108,6 +108,6 @@ service:
       processors: [resourcedetection, batch]
       exporters: [otlphttp/grafana_cloud, debug]
     logs:
-      receivers: [otlp]
+      receivers: [otlp, filelog]
       processors: [batch]
       exporters: [otlphttp/loki, otlphttp/grafana_cloud, debug]
