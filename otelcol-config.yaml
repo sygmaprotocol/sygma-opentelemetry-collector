@@ -59,6 +59,12 @@ receivers:
         timestamp:
           parse_from: attributes.time
           layout: '%Y-%m-%d %H:%M:%S'
+  otlpjsonfile:
+    include:
+      - "/var/log/*.log"
+    exclude:
+      - "/var/log/example.log"
+      
 processors:
   batch:
     timeout: 10s
@@ -124,6 +130,6 @@ service:
       processors: [resourcedetection, batch]
       exporters: [otlphttp/grafana_cloud, debug]
     logs:
-      receivers: [otlp, filelog]
+      receivers: [otlp, filelog, otlpjsonfile]
       processors: [batch]
       exporters: [loki, otlphttp/grafana_cloud, debug]
