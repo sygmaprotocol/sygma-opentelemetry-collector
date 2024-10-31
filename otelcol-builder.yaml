@@ -58,6 +58,8 @@ processors:
     gomod: go.opentelemetry.io/collector/processor/memorylimiterprocessor v0.112.0
   - import: go.opentelemetry.io/collector/processor/batchprocessor
     gomod: go.opentelemetry.io/collector/processor/batchprocessor v0.112.0
+  - import: github.com/open-telemetry/opentelemetry-collector-contrib/processor/resourceprocessor
+    gomod: github.com/open-telemetry/opentelemetry-collector-contrib/processor/resourceprocessor v0.112.0
 
 connectors:
   - import: go.opentelemetry.io/collector/connector/forwardconnector

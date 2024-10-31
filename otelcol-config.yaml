@@ -92,7 +92,7 @@ exporters:
   otlphttp/grafana_cloud:
     traces_endpoint: https://otlp-gateway-prod-us-west-0.grafana.net/otlp/v1/traces #https://chainsafe.grafana.net/loki/api/v1/push
     metrics_endpoint: https://otlp-gateway-prod-us-west-0.grafana.net/otlp/v1/metrics
-    logs_endpoint: https://otlp-gateway-prod-us-west-0.grafana.net/otlp/v1/logs
+    logs_endpoint: https://logs-prod-021.grafana.net:3100/otlp
     auth:
       authenticator: basicauth/grafana_cloud
     encoding: json
@@ -105,11 +105,11 @@ exporters:
   #     enabled: false // its sending emtrics, lets test the otlp/v1/metrics now along with logs
 
   otlphttp/loki:
-    endpoint: https://logs-prod-021.grafana.net:3100/loki/api/vi/push
+    endpoint: https://logs-prod-021.grafana.net:3100/loki/api/vi/push # https://logs-prod-021.grafana.net:3100/otlp
     auth:
       authenticator:  basicauth/otlp
     default_labels_enabled:
-      exporter: false
+      exporter: 
       job:    
 
 service:
