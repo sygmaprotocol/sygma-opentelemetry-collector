@@ -12,7 +12,7 @@ extensions:
   basicauth/otlp:
     client_auth:
       username: "868232"
-      password: "glc_eyJvIjoiMTAyODc5MiIsIm4iOiJzdGFjay05MTA0NTEtaGwtcmVhZC1sb2tpLW90bHAiLCJrIjoiODgwa29TNHgxSzM0cDU2YXBuU1FpczNtIiwibSI6eyJyIjoicHJvZC11cy13ZXN0LTAifX0="
+      password: "glc_eyJvIjoiMTAyODc5MiIsIm4iOiJzdGFjay05MTA0NTEtaGwtcmVhZC1vdGxwaHR0cGxva2kiLCJrIjoiMTc3RW9ZRHB4ZGhFQzBIV0w5NW8yMTk4IiwibSI6eyJyIjoicHJvZC11cy13ZXN0LTAifX0="
   basicauth/prometheus:
     client_auth:
       username: "1535416"
@@ -110,8 +110,8 @@ exporters:
   #   remote_write_queue:
   #     enabled: false // its sending emtrics, lets test the otlp/v1/metrics now along with logs
 
-  loki:
-    endpoint: https://logs-prod-021.grafana.net:3100/loki/api/vi/push # https://logs-prod-021.grafana.net:3100/otlp
+  otlphttp/loki:
+    endpoint: https://logs-prod-021.grafana.net:3100/otlp/vi/logs # https://logs-prod-021.grafana.net:3100/otlp
     auth:
       authenticator:  basicauth/otlp
     default_labels_enabled:
