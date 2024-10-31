@@ -92,7 +92,7 @@ exporters:
   #     enabled: false // its sending emtrics, lets test the otlp/v1/metrics now along with logs
 
   otlphttp/loki:
-    endpoint: "https://logs-prod-021.grafana.net:3100/loki/api/v1/push" 
+    endpoint: "https://logs-prod-021.grafana.net:3100/otlp/vi/logs" 
     auth:
       authenticator:  basicauth/otlp
 
