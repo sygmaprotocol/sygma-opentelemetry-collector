@@ -102,12 +102,12 @@ service:
     traces:
       receivers: [otlp]
       processors: [batch]
-      exporters: [otlphttp/grafana_cloud, debug]
+      exporters: [debug]
     metrics:
       receivers: [otlp, hostmetrics]
       processors: [resourcedetection, batch]
-      exporters: [otlphttp/grafana_cloud, prometheusremotewrite, debug]
+      exporters: [prometheusremotewrite, debug]
     logs:
       receivers: [otlp]
       processors: [batch]
-      exporters: [otlphttp/loki, otlphttp/grafana_cloud, debug]
+      exporters: [otlphttp/loki, debug]
