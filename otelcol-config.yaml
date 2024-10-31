@@ -104,7 +104,7 @@ exporters:
   #   remote_write_queue:
   #     enabled: false // its sending emtrics, lets test the otlp/v1/metrics now along with logs
 
-  otlphttp/loki:
+  loki:
     endpoint: https://logs-prod-021.grafana.net:3100/loki/api/vi/push # https://logs-prod-021.grafana.net:3100/otlp
     auth:
       authenticator:  basicauth/otlp
@@ -126,4 +126,4 @@ service:
     logs:
       receivers: [otlp, filelog]
       processors: [batch]
-      exporters: [otlphttp/loki, otlphttp/grafana_cloud, debug]
+      exporters: [loki, otlphttp/grafana_cloud, debug]
