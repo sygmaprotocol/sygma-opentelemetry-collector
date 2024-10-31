@@ -52,13 +52,13 @@ receivers:
           system.network.connections:
             enabled: true
       process:
-  # filelog:
-  #   include: [ /ecs/* ]
-  #   operators:
-  #     - type: json_parser
-  #       timestamp:
-  #         parse_from: attributes.time
-  #         layout: '%Y-%m-%d %H:%M:%S'
+  filelog:
+    include: ["/ecs/relayer-${env:SYG_RELAYER_ID}-${env:SYG_RELAYER_ENV}/*.log" ] #"/ecs/relayer-1-STAGE"
+    operators:
+      - type: json_parser
+        timestamp:
+          parse_from: attributes.time
+          layout: '%Y-%m-%d %H:%M:%S'
 processors:
   batch:
     timeout: 10s
@@ -76,23 +76,23 @@ exporters:
   #   api:
   #     site: 'datadoghq.com'
   #     key: 'eb7c2acc9758f779ac7a65eaecb9b8b5'
-  # otlphttp/grafana_cloud:
-  #   traces_endpoint: https://otlp-gateway-prod-us-west-0.grafana.net/otlp/v1/traces #https://chainsafe.grafana.net/loki/api/v1/push
-  #   metrics_endpoint: https://otlp-gateway-prod-us-west-0.grafana.net/otlp/v1/metrics
-  #   logs_endpoint: https://otlp-gateway-prod-us-west-0.grafana.net/otlp/v1/logs
-  #   auth:
-  #     authenticator: basicauth/grafana_cloud
-  #   encoding: json
-
-  prometheusremotewrite:
-    endpoint: "https://prometheus-prod-36-prod-us-west-0.grafana.net/api/prom/push"
+  otlphttp/grafana_cloud:
+    traces_endpoint: https://otlp-gateway-prod-us-west-0.grafana.net/otlp/v1/traces #https://chainsafe.grafana.net/loki/api/v1/push
+    metrics_endpoint: https://otlp-gateway-prod-us-west-0.grafana.net/otlp/v1/metrics
+    logs_endpoint: https://otlp-gateway-prod-us-west-0.grafana.net/otlp/v1/logs
     auth:
-      authenticator: basicauth/prometheus
-    remote_write_queue:
-      enabled: false
+      authenticator: basicauth/grafana_cloud
+    encoding: json
+
+  # prometheusremotewrite:
+  #   endpoint: "https://prometheus-prod-36-prod-us-west-0.grafana.net/api/prom/push"
+  #   auth:
+  #     authenticator: basicauth/prometheus
+  #   remote_write_queue:
+  #     enabled: false // its sending emtrics, lets test the otlp/v1/metrics now along with logs
 
   otlphttp/loki:
-    endpoint: "https://logs-prod-021.grafana.net:3100/loki/api/v1/push"
+    endpoint: "https://logs-prod-021.grafana.net:3100/loki/api/v1/push" 
     auth:
       authenticator:  basicauth/otlp
 
@@ -102,12 +102,12 @@ service:
     traces:
       receivers: [otlp]
       processors: [batch]
-      exporters: [debug]
+      exporters: [debug, otlphttp/grafana_cloud]
     metrics:
       receivers: [otlp, hostmetrics]
       processors: [resourcedetection, batch]
-      exporters: [prometheusremotewrite, debug]
+      exporters: [otlphttp/grafana_cloud, debug]
     logs:
       receivers: [otlp]
       processors: [batch]
-      exporters: [otlphttp/loki, debug]
+      exporters: [otlphttp/loki, otlphttp/grafana_cloud, debug]
