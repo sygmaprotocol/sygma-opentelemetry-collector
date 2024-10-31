@@ -66,6 +66,19 @@ processors:
     send_batch_size: 100
   resourcedetection:
     detectors: [ecs, ec2, system, env]
+  attributes:
+    actions:
+      - action: insert
+        key: loki.attribute.labels
+        value: event.domain
+  resource:
+    attributes:
+      - action: insert
+        key: loki.resource.labels
+        value: service.name
+      - action: insert
+        key: loki.format
+        value: logfmt
 
 exporters:
   debug:
@@ -92,9 +105,12 @@ exporters:
   #     enabled: false // its sending emtrics, lets test the otlp/v1/metrics now along with logs
 
   otlphttp/loki:
-    endpoint: "https://logs-prod-021.grafana.net:3100/otlp/vi/logs" 
+    endpoint: https://logs-prod-021.grafana.net:3100/loki/api/vi/push
     auth:
       authenticator:  basicauth/otlp
+    default_labels_enabled:
+      exporter: false
+      job:    
 
 service:
   extensions: [health_check, pprof, zpages, basicauth/grafana_cloud, basicauth/otlp, basicauth/prometheus]
