@@ -7,16 +7,8 @@ extensions:
     endpoint: 0.0.0.0:55679
   basicauth/grafana_cloud:
     client_auth: 
-      username: "910451"
-      password: "glc_eyJvIjoiMTAyODc5MiIsIm4iOiJzdGFjay05MTA0NTEtb3RscC13cml0ZS1vdGxwIiwiayI6Imh0T1VDTXRNSjM0MngyRjA1UTFyajAyNyIsIm0iOnsiciI6InByb2QtdXMtd2VzdC0wIn19"  
-  basicauth/otlp:
-    client_auth:
-      username: "868232"
-      password: "glc_eyJvIjoiMTAyODc5MiIsIm4iOiJzdGFjay05MTA0NTEtaGwtcmVhZC1vdGxwaHR0cGxva2kiLCJrIjoiMTc3RW9ZRHB4ZGhFQzBIV0w5NW8yMTk4IiwibSI6eyJyIjoicHJvZC11cy13ZXN0LTAifX0="
-  basicauth/prometheus:
-    client_auth:
-      username: "1535416"
-      password: "glc_eyJvIjoiMTAyODc5MiIsIm4iOiJzdGFjay05MTA0NTEtaG0td3JpdGUtcHJvbWV0aGV1cyIsImsiOiJSOHM1YmlySjRDMGFQdjE5NmN6MWo4WTYiLCJtIjp7InIiOiJwcm9kLXVzLXdlc3QtMCJ9fQ=="
+      username: "830567"
+      password: "${env:GRAFANA_CLOUD}"  
 
 connectors:
   grafanacloud:
@@ -52,19 +44,7 @@ receivers:
           system.network.connections:
             enabled: true
       process:
-  filelog:
-    include: ["/ecs/relayer-${env:SYG_RELAYER_ID}-${env:SYG_RELAYER_ENV}/*.log" ] #"/ecs/relayer-1-STAGE"
-    operators:
-      - type: json_parser
-        timestamp:
-          parse_from: attributes.time
-          layout: '%Y-%m-%d %H:%M:%S'
-  otlpjsonfile:
-    include:
-      - "/var/log/*.log"
-    exclude:
-      - "/var/log/example.log"
-      
+
 processors:
   batch:
     timeout: 10s
@@ -89,16 +69,8 @@ processors:
 exporters:
   debug:
     verbosity: detailed
-  # datadog:
-  #   retry_on_failure:
-  #     enabled: true
-  #   api:
-  #     site: 'datadoghq.com'
-  #     key: 'eb7c2acc9758f779ac7a65eaecb9b8b5'
   otlphttp/grafana_cloud:
-    traces_endpoint: https://otlp-gateway-prod-us-west-0.grafana.net/otlp/v1/traces #https://chainsafe.grafana.net/loki/api/v1/push
-    metrics_endpoint: https://otlp-gateway-prod-us-west-0.grafana.net/otlp/v1/metrics
-    logs_endpoint: https://logs-prod-021.grafana.net:3100/otlp
+    endpoint: https://otlp-gateway-prod-us-east-0.grafana.net/otlp
     auth:
       authenticator: basicauth/grafana_cloud
     encoding: json
@@ -110,14 +82,6 @@ exporters:
   #   remote_write_queue:
   #     enabled: false // its sending emtrics, lets test the otlp/v1/metrics now along with logs
 
-  otlphttp/loki:
-    endpoint: https://logs-prod-021.grafana.net:3100/otlp/vi/logs # https://logs-prod-021.grafana.net:3100/otlp
-    auth:
-      authenticator:  basicauth/otlp
-    # default_labels_enabled:
-    #   exporter: 
-    #   job:    
-
 service:
   extensions: [health_check, pprof, zpages, basicauth/grafana_cloud, basicauth/otlp, basicauth/prometheus]
   pipelines:
@@ -128,7 +92,7 @@ service:
     metrics:
       receivers: [otlp, hostmetrics]
       processors: [resourcedetection, batch]
-      exporters: [otlphttp/grafana_cloud, debug]
+      exporters: [otlphttp/grafana_cloud]
     logs:
       receivers: [otlp, filelog, otlpjsonfile]
       processors: [batch]

@@ -10,14 +10,10 @@ exporters:
     gomod: github.com/open-telemetry/opentelemetry-collector-contrib/exporter/prometheusexporter v0.112.0
   - import: github.com/open-telemetry/opentelemetry-collector-contrib/exporter/prometheusremotewriteexporter
     gomod: github.com/open-telemetry/opentelemetry-collector-contrib/exporter/prometheusremotewriteexporter v0.112.0
-  - import: github.com/open-telemetry/opentelemetry-collector-contrib/exporter/datadogexporter
-    gomod: github.com/open-telemetry/opentelemetry-collector-contrib/exporter/datadogexporter v0.112.0
   - import: go.opentelemetry.io/collector/exporter/otlphttpexporter 
     gomod: go.opentelemetry.io/collector/exporter/otlphttpexporter v0.112.0
   - import: go.opentelemetry.io/collector/exporter/otlpexporter
     gomod: go.opentelemetry.io/collector/exporter/otlpexporter v0.112.0
-  - import: github.com/open-telemetry/opentelemetry-collector-contrib/exporter/lokiexporter
-    gomod: github.com/open-telemetry/opentelemetry-collector-contrib/exporter/lokiexporter v0.112.0
   - import: go.opentelemetry.io/collector/exporter/debugexporter
     gomod: go.opentelemetry.io/collector/exporter/debugexporter v0.112.0
 
@@ -30,10 +26,6 @@ receivers:
     gomod: github.com/open-telemetry/opentelemetry-collector-contrib/receiver/otlpjsonfilereceiver v0.112.0
   - import: github.com/open-telemetry/opentelemetry-collector-contrib/receiver/hostmetricsreceiver
     gomod: github.com/open-telemetry/opentelemetry-collector-contrib/receiver/hostmetricsreceiver v0.112.0
-  - import: github.com/open-telemetry/opentelemetry-collector-contrib/receiver/lokireceiver
-    gomod: github.com/open-telemetry/opentelemetry-collector-contrib/receiver/lokireceiver v0.112.0
-  - import: github.com/open-telemetry/opentelemetry-collector-contrib/receiver/filelogreceiver
-    gomod: github.com/open-telemetry/opentelemetry-collector-contrib/receiver/filelogreceiver v0.112.0 
 
 extensions:
   - import: go.opentelemetry.io/collector/extension/zpagesextension

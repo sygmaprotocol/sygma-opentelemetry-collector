@@ -4,7 +4,7 @@ WORKDIR /app
 COPY otelcol-builder.yaml .
 RUN <<-EOF
 apk update && apk add git
-go install go.opentelemetry.io/collector/cmd/builder@latest
+go install go.opentelemetry.io/collector/cmd/builder@v0.112.0
 builder --config=otelcol-builder.yaml
 EOF
 
