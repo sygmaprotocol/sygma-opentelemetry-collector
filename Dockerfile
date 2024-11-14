@@ -1,10 +1,10 @@
 FROM golang:1.22.8-alpine3.20 AS sygma
-#ARG OTEL_VERSION=1.30.0
+ARG OTEL_VERSION=0.112.0
 WORKDIR /app
 COPY otelcol-builder.yaml .
 RUN <<-EOF
 apk update && apk add git
-go install go.opentelemetry.io/collector/cmd/builder@v0.112.0
+go install go.opentelemetry.io/collector/cmd/builder@v${OTEL_VERSION}
 builder --config=otelcol-builder.yaml
 EOF
 
