@@ -1,15 +1,25 @@
 extensions:
   health_check:
+   endpoint: "0.0.0.0:13133"
   pprof:
-    endpoint: :1888
+    endpoint: 0.0.0.0:1888
   zpages:
-    endpoint: :55679
+    endpoint: 0.0.0.0:55679
+  basicauth/grafana_cloud:
+    client_auth: 
+      username: "${env:USER_ID}"
+      password: "${env:GRAFANA_CLOUD}"  
+
+connectors:
+  grafanacloud:
+    host_identifiers: ["host.name"]
+    metrics_flush_interval: 60s    
 
 receivers:
   otlp:
     protocols:
-      grpc:
-      http:
+      http: 
+       endpoint: 0.0.0.0:4318
   hostmetrics:
     collection_interval: 10s
     scrapers:
@@ -41,33 +51,29 @@ processors:
     send_batch_max_size: 1000
     send_batch_size: 100
   resourcedetection:
-    detectors: [ecs, ec2, system]
+    detectors: [ecs, ec2, system, env]
 
 exporters:
-  datadog:
-    retry_on_failure:
-      enabled: true
-    api:
-      site: 'datadoghq.com'
-      key: 'eb7c2acc9758f779ac7a65eaecb9b8b5'
-  logging:
+  debug:
     verbosity: detailed
-    sampling_initial: 5
-    sampling_thereafter: 200
-
+  otlphttp/grafana_cloud:
+    endpoint: https://otlp-gateway-prod-us-east-0.grafana.net/otlp
+    auth:
+      authenticator: basicauth/grafana_cloud
+    encoding: json
 
 service:
-  extensions: [health_check, pprof, zpages]
+  extensions: [health_check, pprof, zpages, basicauth/grafana_cloud]
   pipelines:
     traces:
       receivers: [otlp]
       processors: [batch]
-      exporters: [datadog, logging]
+      exporters: [debug, otlphttp/grafana_cloud]
     metrics:
       receivers: [otlp, hostmetrics]
-      processors:  [batch]
-      exporters: [datadog, logging, ]
+      processors: [resourcedetection, batch]
+      exporters: [otlphttp/grafana_cloud]
     logs:
       receivers: [otlp]
       processors: [batch]
-      exporters: [logging, datadog]
+      exporters: [otlphttp/grafana_cloud, debug]
