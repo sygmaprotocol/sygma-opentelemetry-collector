@@ -7,7 +7,7 @@ extensions:
     endpoint: 0.0.0.0:55679
   basicauth/grafana_cloud:
     client_auth: 
-      username: "830567"
+      username: "${env:USER_ID}"
       password: "${env:GRAFANA_CLOUD}"  
 
 connectors:
@@ -52,19 +52,6 @@ processors:
     send_batch_size: 100
   resourcedetection:
     detectors: [ecs, ec2, system, env]
-  attributes:
-    actions:
-      - action: insert
-        key: loki.attribute.labels
-        value: event.domain
-  resource:
-    attributes:
-      - action: insert
-        key: loki.resource.labels
-        value: service.name
-      - action: insert
-        key: loki.format
-        value: logfmt
 
 exporters:
   debug:
@@ -74,13 +61,6 @@ exporters:
     auth:
       authenticator: basicauth/grafana_cloud
     encoding: json
-
-  # prometheusremotewrite:
-  #   endpoint: "https://prometheus-prod-36-prod-us-west-0.grafana.net/api/prom/push"
-  #   auth:
-  #     authenticator: basicauth/prometheus
-  #   remote_write_queue:
-  #     enabled: false // its sending emtrics, lets test the otlp/v1/metrics now along with logs
 
 service:
   extensions: [health_check, pprof, zpages, basicauth/grafana_cloud]
