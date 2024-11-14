@@ -83,7 +83,7 @@ exporters:
   #     enabled: false // its sending emtrics, lets test the otlp/v1/metrics now along with logs
 
 service:
-  extensions: [health_check, pprof, zpages, basicauth/grafana_cloud, basicauth/otlp, basicauth/prometheus]
+  extensions: [health_check, pprof, zpages, basicauth/grafana_cloud]
   pipelines:
     traces:
       receivers: [otlp]
@@ -94,6 +94,6 @@ service:
       processors: [resourcedetection, batch]
       exporters: [otlphttp/grafana_cloud]
     logs:
-      receivers: [otlp, filelog, otlpjsonfile]
+      receivers: [otlp]
       processors: [batch]
-      exporters: [otlphttp/loki, otlphttp/grafana_cloud, debug]
+      exporters: [otlphttp/grafana_cloud, debug]

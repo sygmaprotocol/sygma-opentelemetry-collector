@@ -22,8 +22,6 @@ receivers:
     gomod: go.opentelemetry.io/collector/receiver/otlpreceiver v0.112.0
   - import: github.com/open-telemetry/opentelemetry-collector-contrib/receiver/prometheusreceiver
     gomod: github.com/open-telemetry/opentelemetry-collector-contrib/receiver/prometheusreceiver v0.112.0
-  - import: github.com/open-telemetry/opentelemetry-collector-contrib/receiver/otlpjsonfilereceiver
-    gomod: github.com/open-telemetry/opentelemetry-collector-contrib/receiver/otlpjsonfilereceiver v0.112.0
   - import: github.com/open-telemetry/opentelemetry-collector-contrib/receiver/hostmetricsreceiver
     gomod: github.com/open-telemetry/opentelemetry-collector-contrib/receiver/hostmetricsreceiver v0.112.0
 
