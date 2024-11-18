@@ -57,7 +57,7 @@ processors:
   debug:
     verbosity: detailed
   otlphttp/grafana_cloud:
-    endpoint: https://otlp-gateway-prod-us-east-0.grafana.net/otlp
+    endpoint: "${env:ENDPOINT}" 
     auth:
       authenticator: basicauth/grafana_cloud
     encoding: json
