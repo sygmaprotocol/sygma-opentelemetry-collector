@@ -5,3 +5,4 @@
 *.so
 *.dylib
 testing
+.DS_Store
