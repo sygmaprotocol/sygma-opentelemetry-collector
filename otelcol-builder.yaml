@@ -5,7 +5,7 @@ dist:
   output_path: ./bin
   version: 0.2.0
   otelcol_version: 0.112.0
-***REMOVED***
+exporters:
   - import: github.com/open-telemetry/opentelemetry-collector-contrib/exporter/prometheusexporter
     gomod: github.com/open-telemetry/opentelemetry-collector-contrib/exporter/prometheusexporter v0.112.0
   - import: github.com/open-telemetry/opentelemetry-collector-contrib/exporter/prometheusremotewriteexporter

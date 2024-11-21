@@ -53,7 +53,7 @@ processors:
   resourcedetection:
     detectors: [ecs, ec2, system, env]
 
-***REMOVED***
+exporters:
   debug:
     verbosity: detailed
   otlphttp/grafana_cloud:
@@ -68,12 +68,12 @@ service:
     traces:
       receivers: [otlp]
       processors: [batch]
-      ***REMOVED*** [debug, otlphttp/grafana_cloud]
+      exporters: [debug, otlphttp/grafana_cloud]
     metrics:
       receivers: [otlp, hostmetrics]
       processors: [resourcedetection, batch]
-      ***REMOVED*** [otlphttp/grafana_cloud]
+      exporters: [otlphttp/grafana_cloud]
     logs:
       receivers: [otlp]
       processors: [batch]
-      ***REMOVED*** [otlphttp/grafana_cloud, debug]
+      exporters: [otlphttp/grafana_cloud, debug]
