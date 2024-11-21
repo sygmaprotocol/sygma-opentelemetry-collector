@@ -5,6 +5,8 @@ on:
     types:
       - published
 
+  push:
+
 run-name: Release Sygma OTEL Collector - ${{ inputs.release_tag }} by @${{ github.actor }}
 
 env:
@@ -19,6 +21,7 @@ jobs:
     permissions:
       contents: read
       id-token: write
+      package: write
 
     steps:
       - name: Authorised User only
