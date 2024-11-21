@@ -1,1 +1,2 @@
 # Sygma OpenTelemetry Collector
+
