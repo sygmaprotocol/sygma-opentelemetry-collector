@@ -21,7 +21,6 @@ jobs:
     permissions:
       contents: read
       id-token: write
-      package: write
 
     steps:
       - name: Authorised User only
