@@ -15,6 +15,7 @@ jobs:
   push:
     name: publish image
     runs-on: ubuntu-latest
+    environment: prod
     permissions:
       contents: read
       id-token: write
@@ -49,11 +50,11 @@ jobs:
           push: true
           tags: ${{ env.REGISTRY }}/${{ github.repository }}:${{ env.TAG }},${{ env.REGISTRY }}/${{ github.repository }}:${{ github.ref_name }}
 
-      - name: slack notify
-        uses: 8398a7/action-slack@v3
-        with:
-          status: ${{ job.status }}
-          fields: repo,message,commit,author,action,job,eventName,ref,workflow
-        env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }} # required
-        if: always()
+      # - name: slack notify
+      #   uses: 8398a7/action-slack@v3
+      #   with:
+      #     status: ${{ job.status }}
+      #     fields: repo,message,commit,author,action,job,eventName,ref,workflow
+      #   env:
+      #     SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }} # required
+      #   if: always()
