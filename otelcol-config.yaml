@@ -1,9 +1,25 @@
+extensions:
+  health_check:
+   endpoint: "0.0.0.0:13133"
+  pprof:
+    endpoint: 0.0.0.0:1888
+  zpages:
+    endpoint: 0.0.0.0:55679
+  basicauth/grafana_cloud:
+    client_auth: 
+      username: "${env:USER_ID}"
+      password: "${env:GRAFANA_CLOUD}"  
+
+connectors:
+  grafanacloud:
+    host_identifiers: ["host.name"]
+    metrics_flush_interval: 60s    
+
 receivers:
   otlp:
     protocols:
-      http:
-        endpoint: localhost:4318
-  # The hostmetrics receiver is required to get correct infrastructure metrics in Datadog.
+      http: 
+       endpoint: 0.0.0.0:4318
   hostmetrics:
     collection_interval: 10s
     scrapers:
@@ -11,6 +27,8 @@ receivers:
         metrics:
           system.paging.utilization:
             enabled: true
+      load:
+        cpu_average: true
       cpu:
         metrics:
           system.cpu.utilization:
@@ -20,48 +38,42 @@ receivers:
         metrics:
           system.filesystem.utilization:
             enabled: true
-      load:
       memory:
       network:
-      processes:
-  # The prometheus receiver scrapes metrics needed for the OpenTelemetry Collector Dashboard.
-  prometheus:
-    config:
-      scrape_configs:
-      - job_name: 'otelcol'
-        scrape_interval: 10s
-        static_configs:
-        - targets: ['0.0.0.0:8888']
-
-  filelog:
-    include_file_path: true
-    poll_interval: 500ms
-    include:
-      - /var/log/**/*relayer*/*.log
+        metrics:
+          system.network.connections:
+            enabled: true
+      process:
 
 processors:
   batch:
-    send_batch_max_size: 100
-    send_batch_size: 10
     timeout: 10s
+    send_batch_max_size: 1000
+    send_batch_size: 100
+  resourcedetection:
+    detectors: [ecs, ec2, system, env]
 
 exporters:
-  datadog:
-    api:
-      site: 'https://datadghq.com'
-      key: 'eb7c2acc9758f779ac7a65eaecb9b8b5'
+  debug:
+    verbosity: detailed
+  otlphttp/grafana_cloud:
+    endpoint: "${env:ENDPOINT}" 
+    auth:
+      authenticator: basicauth/grafana_cloud
+    encoding: json
 
 service:
+  extensions: [health_check, pprof, zpages, basicauth/grafana_cloud]
   pipelines:
-    metrics:
-      receivers: [hostmetrics, otlp]
-      processors: [batch]
-      exporters: [datadog]
     traces:
       receivers: [otlp]
       processors: [batch]
-      exporters: [datadog]
+      exporters: [debug, otlphttp/grafana_cloud]
+    metrics:
+      receivers: [otlp, hostmetrics]
+      processors: [resourcedetection, batch]
+      exporters: [otlphttp/grafana_cloud]
     logs:
-      receivers: [otlp, filelog]
+      receivers: [otlp]
       processors: [batch]
-      exporters: [datadog]
+      exporters: [otlphttp/grafana_cloud, debug]
